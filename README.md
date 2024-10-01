@@ -1,6 +1,28 @@
 # Home Page
 ![Homepage](https://github.com/user-attachments/assets/321d368d-f5fc-4e7f-8e2c-8f1ba9256eee)
 
+![home2](https://github.com/user-attachments/assets/773da2b6-e866-4d17-9342-69c6b3bf650e)
+
+![home3](https://github.com/user-attachments/assets/9e39a62a-6291-4429-8ffb-323a3dfec508)
+
+# Dashboard
+![dashboard](https://github.com/user-attachments/assets/f6f944ba-e1e0-4854-995a-053f18e2dbc3)
+
+#Help & Support
+![help support](https://github.com/user-attachments/assets/7469a4ea-be05-4e15-91ff-eaa54f83769f)
+
+# Admin Login
+![adminlogin](https://github.com/user-attachments/assets/c65fbcea-b9b0-4bcd-a7e8-a0ec267fb15a)
+
+# Voting Page
+![Voting](https://github.com/user-attachments/assets/10f0a044-45d6-408c-b176-58f08cbcea98)
+
+# User Login
+![UserLogin](https://github.com/user-attachments/assets/91f8c1b4-5071-4f1c-8b97-8e6553c781b1)
+
+# Profile
+![profile](https://github.com/user-attachments/assets/1ddada25-3f99-463d-a77f-8a23a3995381)
+
 
 # Voting App
 

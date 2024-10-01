@@ -1,4 +1,4 @@
-![Alt text](homepage.jpg)
+![Alt text](C:/Users/Vaibhav%20Agarwal/Desktop/Homepage.jpg)
 
 # Voting App
 

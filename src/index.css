@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#heroSec{
+    background-image: url('./assets/Blognews-story-1024x600-px-1.jpg');
+}

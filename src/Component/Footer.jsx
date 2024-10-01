@@ -1,117 +1,130 @@
-import { Link } from "react-router-dom";
-import { FaWhatsapp, FaFacebookF } from "react-icons/fa";
-import { CiTwitter } from "react-icons/ci";
-import { IoLogoInstagram } from "react-icons/io";
-export default function Footer() {
-  let date = new Date();
-  let year = date.getFullYear();
-
+import {
+  FaFacebookF,
+  FaWhatsapp,
+  FaTwitter,
+  FaInstagram,
+} from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+const Footer = () => {
   return (
-    <>
-      <footer className="bg-white text-[14px]">
-        <div className="row">
-          <div className="col">
-            VoteGov
-            <p>
-              this footer is used for pratise , this is a responsive footer
-              whil̥ōch is made by ME thanks for watching
-            </p>
-          </div>
-          <div className="col">
-            <h3>
-              Office{" "}
-              <div className="underline">
-                <span></span>
-              </div>
-            </h3>
-            <p>Nirvachan Sadan, Ashoka Road, New Delhi 110001</p>
-            <p className="text-sm mb-2">
-              Email:
-              <Link
-                to="mailto:support@votingapp.com"
-                className="text-black hover:underline"
+    <footer className="bg-white text-black py-10 border-t border-gray-300  min-h-full animate-fadeIn">
+      <div className="container mx-auto flex flex-wrap justify-between px-4">
+        {/* Logo and Description */}
+        <div className="w-full md:w-1/4 mb-8 md:mb-0 animate-slideUp">
+          <h3 className="text-2xl font-bold mb-4">VoteGov</h3>
+          <p className="text-sm ">
+            VoteGov makes voting easy and secure. Create, manage, and
+            participate in polls with confidence. Access real-time results and
+            stay informed about upcoming elections. Your voice matters!
+          </p>
+        </div>
+
+        {/* Office Address */}
+        <div className="w-full md:w-1/4 mb-8 md:mb-0 animate-slideUp delay-200">
+          <h3 className="text-lg font-bold mb-4">Office</h3>
+          <p>Nirvachan Sadan, Ashoka Road, New Delhi 110001</p>
+          <p className="text-sm mt-2">
+            Email:{" "}
+            <a
+              href="mailto:support@votingapp.com"
+              className="text-[#495057] hover:underline hover:text-gray-600 transition-all duration-300"
+            >
+              support@votingapp.com
+            </a>
+          </p>
+          <p className="text-sm">
+            Phone:{" "}
+            <a
+              href="tel:+1234567890"
+              className="text-[#495057] hover:underline hover:text-gray-600 transition-all duration-300"
+            >
+              +1 234 567 890
+            </a>
+          </p>
+        </div>
+
+        {/* Links */}
+        <div className="w-full md:w-1/4 mb-8 md:mb-0 animate-slideUp delay-300">
+          <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+          <ul className="space-y-2">
+            <li>
+              <NavLink to="/hero-section"
+                className="text-black hover:underline hover:text-[#495057] transition-all duration-300"
               >
-                support@votingapp.com
-              </Link>
-            </p>
-            <p className="text-sm">
-              Phone:{" "}
-              <Link to="tel:+1234567890" className="text-black hover:underline">
-                +1 234 567 890
-              </Link>
-            </p>
-          </div>
-          <div className="col">
-            <h3>
-              Links
-              <div className="underline">
-                <span></span>
-              </div>
-            </h3>
-            <ul>
-              <li className="mb-1">
-                <a href="#" className="text-black hover:underline">
-                  Home
-                </a>
-              </li>
-              <li className="mb-1">
-                <a href="#" className="text-black hover:underline">
-                  Create a Poll
-                </a>
-              </li>
-              <li className="mb-1">
-                <a href="#" className="text-black hover:underline">
-                  My Polls
-                </a>
-              </li>
-              <li className="mb-1">
-                <a href="#" className="text-black hover:underline">
-                  Results
-                </a>
-              </li>
-              <li className="mb-1">
-                <a href="#" className="text-black hover:underline">
-                  Help Center
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="col">
-            {/* <form>
-                <i className="fa-regular fa-envelope"></i>
-                <input className="text-black" type="email" placeholder="Enter your Email-Id" required/>
-                <button className="text-black bg-gray-500" type="submit"><i className="fa-solid fa-arrow-right"></i></button>
-            </form> */}
-            <div className="social-icon flex flex-wrap max-lg:flex">
-              
-              <Link className="brand text-[27px]" to="https://www.facebook.com">
-                {" "}
-                <FaFacebookF />
-              </Link>
-              <Link className="brand text-3xl" to="https://www.whatsapp.com">
-                <FaWhatsapp />
-              </Link>
-              <Link className="brand text-3xl" to="https://www.twitter.com">
-                <CiTwitter />
-              </Link>
-              <Link className="brand text-3xl" to="https://www.instagram.com">
-                <IoLogoInstagram />
-              </Link>
-              {/* <Link className="brand text-3xl" href="https://www.discord.com">< FaDiscord /></Link> */}
-            </div>
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/"
+                className="text-black hover:underline hover:text-[#495057] transition-all duration-300"
+              >
+                Create a Poll
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/dashboard"
+                className="text-black hover:underline hover:text-[#495057] transition-all duration-300"
+              >
+                My Polls
+              </NavLink>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="text-black hover:underline hover:text-[#495057] transition-all duration-300"
+              >
+                Results
+              </a>
+            </li>
+            <li>
+              <NavLink to="/"
+                className="text-black hover:underline hover:text-[#495057] transition-all duration-300"
+              >
+                Help Center
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+
+        {/* Social Icons */}
+        <div className="w-full md:w-1/4 animate-slideUp delay-400">
+          <h3 className="text-lg font-bold mb-4">Follow Us</h3>
+          <div className="flex space-x-4 max-sm:items-center max-sm:justify-center ">
+            <a  target="_blank"
+              href="https://www.facebook.com"
+              className="text-2xl text-black hover:text-[#212121] transform hover:scale-110 transition-all duration-300"
+            >
+              <FaFacebookF />
+            </a>
+            <a target="_blank"
+              href="https://www.whatsapp.com"
+              className="text-2xl text-black hover:text-[#212121] transform hover:scale-110 transition-all duration-300"
+            >
+              <FaWhatsapp />
+            </a>
+            <a  target="_blank"
+              href="https://www.twitter.com"
+              className="text-2xl text-black hover:text-[#212121] transform hover:scale-110 transition-all duration-300"
+            >
+              <FaTwitter />
+            </a>
+            <a  target="_blank"
+              href="https://www.instagram.com"
+              className="text-2xl text-black hover:text-[#212121] transform hover:scale-110 transition-all duration-300"
+            >
+              <FaInstagram />
+            </a>
           </div>
         </div>
-        {/* <hr> */}
-        <p className="copyright">
-          Copyright © <span>{year}</span> Charger. All Rights Reserved.
-        </p>
+      </div>
 
-        <p className="copyright">
-          {" "}
-          All individual works are copyright protected by their respective
-          owners & contributors. BrandCrowd is handcrafted from around the world
+      <div className=" flex justify-center text-center items-center border-t border-gray-200 pt-8 mt-8">
+        <p className="animate-fadeIn delay-500">
+          © {new Date().getFullYear()} VoteGov. All Rights Reserved.
         </p>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
-}
+};
+
+export default Footer;

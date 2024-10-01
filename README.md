@@ -1,4 +1,4 @@
-ko
+![Alt text](homepage.jpg)
 
 # Voting App
 

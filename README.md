@@ -131,7 +131,7 @@ Contributions are welcome! If you'd like to contribute, please fork the reposito
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-## Autor
+## Author
 
 <a href="https://github.com/Mr-devloper1001">Vaibhav agarwal</a>
 

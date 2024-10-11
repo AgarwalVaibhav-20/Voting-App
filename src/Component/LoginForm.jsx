@@ -106,7 +106,7 @@ export default function LoginForm() {
               {isAdminLogin?"":
               <div className="flex gap-1 justify-center items-center max-sm:text-md">
                 <p>Don’t have an account yet?</p>
-                <NavLink to="/home" className="text-blue-700 hover:text-orange-400">
+                <NavLink to="/Sign-up" className="text-blue-700 hover:text-orange-400">
                   Sign-up
                 </NavLink>
               </div>

@@ -12,6 +12,7 @@ import LoginForm from "./Component/LoginForm.jsx";
 import HelpSupport from "./Component/HelpSupport.jsx";
 import FAQPage from "./Component/FAQPage.jsx";
 import AdminDashboard from "./Component/AdminDashboard.jsx";
+import RegistrationForm from "./Component/RegistrationForm.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path:"login",
         element:<LoginForm/>
+      },
+      {
+        path:"Sign-up",
+        element:<RegistrationForm/>
       },
       {
         path:"help&support",

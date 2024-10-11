@@ -189,7 +189,7 @@ export default function RegistrationForm() {
 
           <p className="text-gray-800 text-sm mt-6 text-center">
             Already have an account?{" "}
-            <NavLink to="/login-form" className={"text-orange-600 hover:text-orange-700"}>Login</NavLink>
+            <NavLink to="/login" className={"text-orange-600 hover:text-orange-700"}>Login</NavLink>
           </p>
         </form>
       </div>

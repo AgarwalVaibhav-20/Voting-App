@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useState } from "react";
+import axios from "axios";
 
 export default function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,8 +17,16 @@ export default function RegistrationForm() {
     setShowConfirmPassword((prevState) => !prevState);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    const res = await axios.post(`https://voting-app-backend-node.vercel.app/user/signup`,data);
+    console.log('resData',res.data)
+    if(res.data.token){
+      console.log('token found')
+      localStorage.setItem('token',res.data.token);
+    }else{
+      console.log('Token cannot be saved or some error occured', res.data)
+    }
   };
 
   // Watching the password value to validate against confirm password
@@ -37,34 +46,34 @@ export default function RegistrationForm() {
               {/* First Name */}
               <div className="w-full">
                 <label className="text-gray-800 text-sm sm:text-base md:text-lg mb-2 block">
-                  First Name
+                  Name
                 </label>
                 <input
-                  name="fname"
+                  name="name"
                   type="text"
                   className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500 mb-2" 
-                  placeholder="Enter first name"
-                  {...register("first-name", { required: "First name is required" })}
+                  placeholder="Alok Gupta"
+                  {...register("name", { required: "Name is required" })}
                 />
-                {errors["first-name"] && (
-                  <p className="text-red-500 text-sm">{errors["first-name"].message}</p>
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{errors.name.message}</p>
                 )}
               </div>
               
-              {/* Last Name */}
+              {/* Age */}
               <div className="w-full">
                 <label className="text-gray-800 text-sm sm:text-base md:text-lg mb-2 max-sm:mt-4 block">
-                  Last Name
+                  Age
                 </label>
                 <input
-                  name="lname"
-                  type="text"
+                  name="age"
+                  type="number"
                   className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                  placeholder="Enter last name"
-                  {...register("last-name", { required: "Last name is required" })}
+                  placeholder="23"
+                  {...register("age", { required: "Age is required" })}
                 />
-                {errors["last-name"] && (
-                  <p className="text-red-500 text-sm">{errors["last-name"].message}</p>
+                {errors.age && (
+                  <p className="text-red-500 text-sm">{errors.age.message}</p>
                 )}
               </div>
             </div>
@@ -76,7 +85,7 @@ export default function RegistrationForm() {
                 name="email"
                 type="email"
                 className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                placeholder="Enter email"
+                placeholder="abc@example.com"
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
@@ -100,7 +109,7 @@ export default function RegistrationForm() {
                 maxLength="12"
                 className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                 placeholder="Enter your 12-digit Aadhaar number"
-                {...register("aadhaar", {
+                {...register("adhaarNum", {
                   required: "Aadhaar number is required",
                   pattern: {
                     value: /^\d{12}$/,
@@ -111,7 +120,7 @@ export default function RegistrationForm() {
               {errors.aadhaar && <p className="text-red-500 text-sm">{errors.aadhaar.message}</p>}
             </div>
 
-            {/* Date of Birth Field */}
+            {/* Date of Birth Field
             <div>
               <label className="text-gray-800 text-sm sm:text-base md:text-lg mb-2 block">
                 Date of Birth
@@ -123,7 +132,7 @@ export default function RegistrationForm() {
                 {...register("dob", { required: "Date of birth is required" })}
               />
               {errors.dob && <p className="text-red-500 text-sm">{errors.dob.message}</p>}
-            </div>
+            </div> */}
 
             {/* Password Field */}
             <div className="relative w-full">

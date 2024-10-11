@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@canvasjs/react-charts": "^1.0.2",
+    "axios": "^1.7.7",
     "canvasjs": "^1.8.3",
     "chart.js": "^4.4.4",
     "chartjs-plugin-datalabels": "^2.2.0",

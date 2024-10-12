@@ -24,7 +24,7 @@ export default function RegistrationForm() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
     // const res = await axios.post(`https://voting-app-backend-node.vercel.app/user/signup`, data);
     const response = await toast.promise(
       axios.post(`https://voting-app-backend-node.vercel.app/user/signup`, data),
@@ -34,9 +34,9 @@ export default function RegistrationForm() {
         error: 'User with this email or aadhaar already exists 🤯'
       }
     )
-    console.log('resData', response.data)
+    // console.log('resData', response.data)
     if (response.data.token) {
-      console.log('token found')
+      // console.log('token found')
       localStorage.setItem('token', response.data.token);
       navigate('/verify');
     } else {

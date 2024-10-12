@@ -1,16 +1,19 @@
 import { useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import VerifyUser from "./VerifyUser";
+import { useNavigate} from 'react-router-dom';
 
 export default function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const navigate= useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -27,16 +30,27 @@ export default function RegistrationForm() {
       axios.post(`https://voting-app-backend-node.vercel.app/user/signup`, data),
       {
         pending: 'Signing up ....',
-        success: 'Signed-Up success 👌',
-        error: 'Unable to sign-up 🤯'
+        success: 'Sign-Up success 👌',
+        error: 'User with this email or aadhaar already exists 🤯'
       }
     )
     console.log('resData', response.data)
     if (response.data.token) {
       console.log('token found')
       localStorage.setItem('token', response.data.token);
+      navigate('/verify');
     } else {
-      console.log('Token cannot be saved or some error occured', response.data)
+      toast(response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
     }
   };
 

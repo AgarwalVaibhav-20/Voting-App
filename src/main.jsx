@@ -13,6 +13,7 @@ import HelpSupport from "./Component/HelpSupport.jsx";
 import FAQPage from "./Component/FAQPage.jsx";
 import AdminDashboard from "./Component/AdminDashboard.jsx";
 import RegistrationForm from "./Component/RegistrationForm.jsx";
+import VerifyUser from "./Component/VerifyUser.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path:"Sign-up",
         element:<RegistrationForm/>
+      },
+      {
+        path:"verify",
+        element:<VerifyUser/>
       },
       {
         path:"help&support",

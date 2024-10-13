@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { uploadImageToCloudinary } from "../upload/uploadImageToCloudinary";
+// import axios from "axios";
 
 const EditProfile = () => {
   const [name, setName] = useState("");
@@ -6,12 +8,29 @@ const EditProfile = () => {
   const [phone, setPhone] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
-  const handleProfilePictureChange = (e) => {
-    setProfilePicture(URL.createObjectURL(e.target.files[0]));
-  };
+  const [picToDIsplay, setPicToDIsplay] = useState(null)
 
-  const handleSubmit = (e) => {
+  const handleProfilePictureChange = (e) => {
+    setPicToDIsplay(URL.createObjectURL(e.target.files[0]))
+    setProfilePicture(e.target.files[0]);
+  };
+  
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
+
+    let profilePictureUrl = "";
+    if (profilePicture) {
+      profilePictureUrl = await uploadImageToCloudinary(profilePicture);
+    }
+    const profileData = {
+      name,
+      email,
+      phone,
+      profilePictureUrl, 
+    };
+
+    console.log("Profile Data to Submit:", profileData);
   };
 
   return (
@@ -22,7 +41,7 @@ const EditProfile = () => {
           {profilePicture && (
             <div className="mb-5 flex justify-center">
               <img
-                src={profilePicture}
+                src={picToDIsplay}
                 alt="Profile Preview"
                 className="rounded-full w-24 h-24"
               />

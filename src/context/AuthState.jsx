@@ -1,5 +1,5 @@
 import AuthContext from "./AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import React from 'react'
 
@@ -7,6 +7,11 @@ export const AuthState = ({ children }) => {
 
     const [loggedUser, setLoggedUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+      fetchUser(localStorage.getItem('token'))
+    }, [])
+    
 
     const fetchUser = async (token) => {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/profile`, {

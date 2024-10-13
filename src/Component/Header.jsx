@@ -6,7 +6,6 @@ import { TfiHelpAlt } from "react-icons/tfi";
 import { RiAdminLine } from "react-icons/ri";
 import profileImage from "../assets/profileImage.jpg";
 import { useNavigate } from "react-router-dom";
-import { BiLogOut } from "react-icons/bi";
 import { useAuth } from "../context/AuthState";
 
 
@@ -14,39 +13,12 @@ export default function Myhead() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false); // State for profile dropdown
 
-  // const [token, setToken] = useState(null);
-  
-  // const [flag, setFlag] = useState(false);
 
   const navigate = useNavigate();
 
   const { loggedUser, isLoggedIn, logout, fetchUser } = useAuth();
 
 
-  // useEffect(() => {
-  //   console.log('on arrival chala');
-  //   setToken(localStorage.getItem('token'))
-  //   if(!loggedUser && !flag){
-  //     if(token){
-  //       console.log('ye chala 1 baar');
-  //       (async()=>{
-  //         const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/profile`, {
-  //           method: 'GET',
-  //           headers: {
-  //               'Authorization': `Bearer ${token}`,
-  //               'Content-Type': 'application/json'
-  //           }
-  //         })
-  //         const res = await response.json();
-  //         if(response.ok && res.success){
-  //           setLoggedUser(res.user)
-  //           setIsLoggedIn(true)
-  //         }
-  //         setFlag(true)
-  //       })();
-  //     }
-  //   }
-  // }, [token, loggedUser, flag])
   
 
   const handleClickOnLogout = () => {

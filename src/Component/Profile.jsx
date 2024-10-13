@@ -2,9 +2,12 @@ import { useContext } from "react";
 import { PartiesName } from "./ContextApi"; // Ensure you have a valid context here
 import profileImage from "../assets/profileImage.jpg";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthState";
 
 export default function ProfilePage() {
   const parties = useContext(PartiesName); // Get party names from context
+
+  const { loggedUser, isLoggedIn, logout, fetchUser } = useAuth();
 
   // Assuming the array is provided by context and has at least 3 parties
   const user = {

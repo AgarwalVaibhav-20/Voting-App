@@ -27,7 +27,7 @@ export default function RegistrationForm() {
     // console.log(data);
     // const res = await axios.post(`https://voting-app-backend-node.vercel.app/user/signup`, data);
     const response = await toast.promise(
-      axios.post(`https://voting-app-backend-node.vercel.app/user/signup`, data),
+      axios.post(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/signup`, data),
       {
         pending: 'Signing up ....',
         success: 'Sign-Up success 👌',
@@ -35,7 +35,7 @@ export default function RegistrationForm() {
       }
     )
     // console.log('resData', response.data)
-    if (response.data.token) {
+    if (response.data && response.data.token) {
       // console.log('token found')
       localStorage.setItem('token', response.data.token);
       navigate('/verify');

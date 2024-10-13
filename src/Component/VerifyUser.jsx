@@ -1,46 +1,84 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import OtpInput from './OtpInput'
 import { CgSpinner, CgSpinnerTwoAlt } from 'react-icons/cg';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useTimer } from 'react-timer-hook';
 
 const VerifyUser = () => {
 
   const [enteredOtp, setEnteredOtp] = useState(null);
   const [isInputFieldEmpty, setIsInputFieldEmpty] = useState(true)
   const [isBtnClicked, setisBtnClicked] = useState(false);
-  const [isResendOtpClicked, setIsResendOtpClicked] = useState(false)
-  const navigate= useNavigate();
+  const [isResendOtpClicked, setIsResendOtpClicked] = useState(true)
+  const navigate = useNavigate();
 
-  const onOtpSubmit = (otp) => {
-    setEnteredOtp(otp)
-    setIsInputFieldEmpty(false)
+  const [token, setToken] = useState(null);
+
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 120);
+  const [expiryTimestamp, setExpiryTimestamp] = useState(time);
+
+  const { start, restart, minutes, seconds } = useTimer({ expiryTimestamp })
+
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+    start();
+    setTimeout(() => {
+      setIsResendOtpClicked(false);
+    }, 120000);
+  }, [])
+
+  const enableCount = () => {
+    const resetTime = new Date();
+    resetTime.setSeconds(resetTime.getSeconds() + 120);
+    restart(resetTime)
+    setTimeout(() => {
+      setIsResendOtpClicked(false);
+    }, 120000);
+
   }
 
-  const handleClick = async() => {
-    setisBtnClicked(true);  
-    const token = localStorage.getItem('token')
-    const response = await toast.promise(
-      axios.get(`https://voting-app-backend-node.vercel.app/user/verify/${enteredOtp}`, 
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      ),
+  const handleResendOtp = async () => {
+    setIsResendOtpClicked(true);
+    enableCount();
+    const res = await axios.put(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/resendOtp`, null,
       {
-        pending: 'Verifying ...',
-        success: 'Verified successfully',
-        error: 'Some error occured while verifying 🤯'
+        headers: { Authorization: `Bearer ${token}` }
       }
     )
-    if (response.data.token) {
-      // console.log('token found')
-      localStorage.setItem('token', response.data.token);
-      navigate('/');
+    // console.log(session);
+    if (res.data) {
+      if (res.data.success) {
+        toast.success(res.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      } else {
+        toast.error(res.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      }
     } else {
-      toast(response.data.message, {
+      toast.error('Internal server error', {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -48,19 +86,58 @@ const VerifyUser = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "colored",
         transition: Bounce,
-        });
+      });
+    }
+    // enableCount();
+  }
+
+  const onOtpSubmit = (otp) => {
+    setEnteredOtp(otp)
+    setIsInputFieldEmpty(false)
+  }
+
+  const handleClick = async () => {
+    setisBtnClicked(true);
+    const response = await toast.promise(
+      axios.get(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/verify/${enteredOtp}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      ),
+      {
+        pending: 'Verifying ...',
+        success: 'Verified successfully',
+        error: 'Some error occured'
+      }
+    )
+    if (response.data.token) {
+      // console.log('token found')
+      localStorage.setItem('token', response.data.token);
+      navigate('/');
+    } else {
+      toast.error('internal server error', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
     }
 
   }
-  const handleResendOtp = () => {
-    setIsResendOtpClicked(true);
-  }
+  // const handleResendOtp = () => {
+  //   setIsResendOtpClicked(true);
+  // }
 
   return (
     <>
-    <ToastContainer
+      <ToastContainer
         position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -77,21 +154,22 @@ const VerifyUser = () => {
         <div className='flex justify-center items-center h-full'>
           <div className='flex  flex-col space-y-8 bg-blue-400 p-4'>
             <h1 className='text-center font-bold text-black text-3xl -mt-24'>Verify yourself</h1>
+            <p className='text-gray-600'>A verification email has been sent to your email, its better to check your spam also</p>
             <div className='flex justify-center'>
-              <OtpInput length={6} onOtpSubmit={onOtpSubmit}/>
+              <OtpInput length={6} onOtpSubmit={onOtpSubmit} />
             </div>
             <div className='flex items-center justify-between'>
               <button type='button' onClick={handleClick} className="py-3 px-4 text-sm tracking-wider font-bold rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none disabled:bg-orange-400 disabled:cursor-not-allowed" disabled={isBtnClicked || isInputFieldEmpty}>{
-                  isBtnClicked ? <div className='flex items-center space-x-2'><CgSpinner className='animate-spin size-5' /><div>Verifying..</div></div> : 'Verify'
-                }</button>
+                isBtnClicked ? <div className='flex items-center space-x-2'><CgSpinner className='animate-spin size-5' /><div>Verifying..</div></div> : 'Verify'
+              }</button>
               <button type='button' onClick={handleResendOtp} className="py-3 px-4 text-sm tracking-wider font-bold rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none disabled:bg-orange-400 disabled:cursor-not-allowed" disabled={isResendOtpClicked || isBtnClicked}>{
-                  isResendOtpClicked ? 'wait' : 'Resend'
-                }</button>
+                isResendOtpClicked ? <><span>{minutes}</span>:<span>{seconds}</span></> : 'Resend otp'
+              }</button>
             </div>
           </div>
         </div>
       </div>
-    
+
     </>
   )
 }

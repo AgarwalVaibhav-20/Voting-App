@@ -16,7 +16,7 @@ export default function Myhead() {
 
   const navigate = useNavigate();
 
-  const { loggedUser, isLoggedIn, logout, fetchUser } = useAuth();
+  const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
 
 
   
@@ -113,11 +113,11 @@ export default function Myhead() {
                   >
                     {/* Profile image */}
                     <img
-                      src={profileImage} // Replace this with the actual path to the profile image
+                      src={!status && loggedUser?.profilePic ? loggedUser.profilePic : 'https://res.cloudinary.com/dljgidqrq/image/upload/v1728844361/ljmzm14uujnfl1nqwlxi.jpg'}
                       alt="Profile"
                       className="w-8 h-8 rounded-full"
                     />
-                    <span className='font-bold'>{loggedUser.name.split(' ')[0]}</span>
+                    <span className='font-bold'>{loggedUser?.name.split(' ')[0]}</span>
                   </button> : <NavLink to="/login" className="block px-4 py-2 font-bold text-orange-400 hover:text-orange-600" onClick={closeProfileDropdown}>Login / Signup</NavLink> 
                 }
 
@@ -130,11 +130,11 @@ export default function Myhead() {
                     <li className="flex items-center space-x-2 p-4">
                       {/* Display the profile image inside the dropdown */}
                       <img
-                        src={profileImage}
+                        src={!status && loggedUser?.profilePic  ? loggedUser.profilePic : 'https://res.cloudinary.com/dljgidqrq/image/upload/v1728844361/ljmzm14uujnfl1nqwlxi.jpg'}
                         alt="Profile"
                         className="w-10 h-10 rounded-full"
                       />
-                      <span className="text-gray-800">{loggedUser.name}</span>
+                      <span className="text-gray-800">{loggedUser?.name}</span>
                     </li>
                     <li>
                       {/* PROFILE */}

@@ -6,12 +6,8 @@ import React from 'react'
 export const AuthState = ({ children }) => {
 
     const [loggedUser, setLoggedUser] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
-      fetchUser(localStorage.getItem('token'))
-    }, [])
-    
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [status, setStatus] = useState(false);
 
     const fetchUser = async (token) => {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/profile`, {
@@ -26,8 +22,17 @@ export const AuthState = ({ children }) => {
           if(response.ok && res.success){
             setLoggedUser(res.user)
             setIsLoggedIn(true)
+            return true;
           }
+          return false;
     };
+    useEffect(() => {
+      const res = fetchUser(localStorage.getItem('token'));
+      if(res)
+        setStatus(false);
+    }, [])
+    
+
 
     const logout = () => {
         setLoggedUser(null);
@@ -35,7 +40,7 @@ export const AuthState = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ loggedUser, isLoggedIn, setLoggedUser, setIsLoggedIn, fetchUser, logout }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ loggedUser, isLoggedIn, setLoggedUser, setIsLoggedIn, fetchUser, logout, status }}>{children}</AuthContext.Provider>
     )
 }
 

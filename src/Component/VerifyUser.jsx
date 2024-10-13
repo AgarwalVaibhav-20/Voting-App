@@ -184,7 +184,7 @@ const VerifyUser = () => {
         <div className='flex justify-center items-center h-full'>
           <div className='flex  flex-col space-y-8 p-4'>
             <h1 className='text-center font-bold text-black text-3xl -mt-24'>Verify yourself</h1>
-            <p className='text-gray-600'>A verification email has been sent to your email, its better to check your spam also</p>
+            <p className='text-gray-600 text-center'>A verification email has been sent to your email, its better to check your spam also</p>
             <div className='flex justify-center'>
               <OtpInput length={6} onOtpSubmit={onOtpSubmit} />
             </div>

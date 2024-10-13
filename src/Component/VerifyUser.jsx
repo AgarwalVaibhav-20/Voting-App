@@ -100,24 +100,54 @@ const VerifyUser = () => {
 
   const handleClick = async () => {
     setisBtnClicked(true);
-    const response = await toast.promise(
-      axios.get(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/verify/${enteredOtp}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      ),
+    toast('Verifing', {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/verify/${enteredOtp}`,
       {
-        pending: 'Verifying ...',
-        success: 'Verified successfully',
-        error: 'Some error occured'
+        headers: { Authorization: `Bearer ${token}` }
       }
     )
-    if (response.data.token) {
-      // console.log('token found')
-      localStorage.setItem('token', response.data.token);
-      navigate('/');
-    } else {
-      toast.error('internal server error', {
+    setisBtnClicked(false);
+    if(response.data){
+      if (response.data.success) {
+        toast.success('Verified successfully', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+          });
+        // console.log('token found')
+        localStorage.setItem('token', response.data.token);
+        navigate('/');
+      } else {
+        toast.error(response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      }
+    }else{
+      toast.error("Internal server error", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -152,7 +182,7 @@ const VerifyUser = () => {
       />
       <div className='h-screen w-full'>
         <div className='flex justify-center items-center h-full'>
-          <div className='flex  flex-col space-y-8 bg-blue-400 p-4'>
+          <div className='flex  flex-col space-y-8 p-4'>
             <h1 className='text-center font-bold text-black text-3xl -mt-24'>Verify yourself</h1>
             <p className='text-gray-600'>A verification email has been sent to your email, its better to check your spam also</p>
             <div className='flex justify-center'>

@@ -6,10 +6,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthState";
+
 
 export default function LoginForm() {
   const { register, handleSubmit } = useForm();
   const [isLogin, setIsLogin] = useState(false); 
+
+  const { loggedUser, isLoggedIn, logout, fetchUser } = useAuth();
 
   const navigate = useNavigate();
 
@@ -48,6 +52,7 @@ export default function LoginForm() {
         transition: Bounce,
       });
       localStorage.setItem('token', res.token);
+      fetchUser(res.token);
       navigate('/');
     }
     setIsLogin(false);

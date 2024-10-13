@@ -1,13 +1,60 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdMenu, MdClose } from "react-icons/md";
 import { CiLogout,CiLogin, CiUser } from "react-icons/ci";
 import { TfiHelpAlt } from "react-icons/tfi";
 import { RiAdminLine } from "react-icons/ri";
 import profileImage from "../assets/profileImage.jpg";
+import { useNavigate } from "react-router-dom";
+import { BiLogOut } from "react-icons/bi";
+import { useAuth } from "../context/AuthState";
+
+
 export default function Myhead() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false); // State for profile dropdown
+
+  // const [token, setToken] = useState(null);
+  
+  // const [flag, setFlag] = useState(false);
+
+  const navigate = useNavigate();
+
+  const { loggedUser, isLoggedIn, logout, fetchUser } = useAuth();
+
+
+  // useEffect(() => {
+  //   console.log('on arrival chala');
+  //   setToken(localStorage.getItem('token'))
+  //   if(!loggedUser && !flag){
+  //     if(token){
+  //       console.log('ye chala 1 baar');
+  //       (async()=>{
+  //         const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/profile`, {
+  //           method: 'GET',
+  //           headers: {
+  //               'Authorization': `Bearer ${token}`,
+  //               'Content-Type': 'application/json'
+  //           }
+  //         })
+  //         const res = await response.json();
+  //         if(response.ok && res.success){
+  //           setLoggedUser(res.user)
+  //           setIsLoggedIn(true)
+  //         }
+  //         setFlag(true)
+  //       })();
+  //     }
+  //   }
+  // }, [token, loggedUser, flag])
+  
+
+  const handleClickOnLogout = () => {
+    closeProfileDropdown();
+    logout();
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -86,21 +133,24 @@ export default function Myhead() {
 
               {/* Profile Dropdown */}
               <li className="relative max-lg:w-[100%]">
-                <button
-                  onClick={toggleProfileDropdown}
-                  className="flex items-center space-x-2 py-2 pr-4 pl-3 text-gray-700 bg-white  lg:border-0 hover:text-orange-700 lg:p-0"
-                >
-                  {/* Profile image */}
-                  <img
-                    src={profileImage} // Replace this with the actual path to the profile image
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span>Vaibhav</span>
-                </button>
+                {
+                  isLoggedIn ? 
+                  <button
+                    onClick={toggleProfileDropdown}
+                    className="flex items-center space-x-2 py-2 pr-4 pl-3 text-gray-700 bg-white  lg:border-0 hover:text-orange-700 lg:p-0"
+                  >
+                    {/* Profile image */}
+                    <img
+                      src={profileImage} // Replace this with the actual path to the profile image
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <span className='font-bold'>{loggedUser.name.split(' ')[0]}</span>
+                  </button> : <NavLink to="/login" className="block px-4 py-2 font-bold text-orange-400 hover:text-orange-600" onClick={closeProfileDropdown}>Login / Signup</NavLink> 
+                }
 
                 {/* Dropdown menu */}
-                {isProfileOpen && (
+                {isProfileOpen && isLoggedIn && (
                   <ul
                     className="absolute sm:right-1 top-[45px] 
                    mt-2 w-48 bg-white rounded-md shadow-lg"
@@ -112,7 +162,7 @@ export default function Myhead() {
                         alt="Profile"
                         className="w-10 h-10 rounded-full"
                       />
-                      <span className="text-gray-800">Vaibhav</span>
+                      <span className="text-gray-800">{loggedUser.name}</span>
                     </li>
                     <li>
                       {/* PROFILE */}
@@ -138,44 +188,35 @@ export default function Myhead() {
                         </div>
                       </NavLink>
                     </li>
-                    <li>
-                      <NavLink
-                        to="/login"
-                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                        onClick={closeProfileDropdown} // Close dropdown when clicked
-                      >
-                        <div className="flex gap-2 items-center">
-                          <CiLogin className="text-xl" />
-                          <span>Log-In</span>
-                        </div>
-                      </NavLink>
-                    </li>
                     {/* ADMIN */}
-                    <li>
-                      <NavLink
-                        to="/admin"
-                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                        onClick={closeProfileDropdown} // Close dropdown when clicked
-                      >
-                        <div className="flex gap-2 items-center">
-                          <RiAdminLine className="text-xl" />
-                          <span>Admin</span>
-                        </div>
-                      </NavLink>
-                    </li>
+                    {
+                      loggedUser.userType === 'admin' &&
+                      <li>
+                        <NavLink
+                          to="/admin"
+                          className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                          onClick={closeProfileDropdown} // Close dropdown when clicked
+                        >
+                          <div className="flex gap-2 items-center">
+                            <RiAdminLine className="text-xl" />
+                            <span>Admin</span>
+                          </div>
+                        </NavLink>
+                      </li>
+                    }
 
                     {/* LOGOUT */}
                     <li>
-                      <NavLink
-                        to="/logout"
-                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                        onClick={closeProfileDropdown} // Close dropdown when clicked
+                      <button
+                        type="button"
+                        className="block w-full px-4 py-2 text-gray-800 hover:bg-gray-100"
+                        onClick={handleClickOnLogout}
                       >
                         <div className="flex gap-2 items-center">
                           <CiLogout className="text-xl" />
                           <span>Logout</span>
                         </div>
-                      </NavLink>
+                      </button>
                     </li>
                   </ul>
                 )}

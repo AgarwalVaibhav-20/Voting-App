@@ -6,6 +6,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./Component/Header";
 import Footer from "./Component/Footer";
 import { PartiesProvider } from "./Component/ContextApi";
+import { AuthState } from "./context/AuthState";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -14,11 +15,13 @@ const App = () => {
   }, [pathname]);
   return (
     <>
+    <AuthState>
       <PartiesProvider>
         <Header />
         <Outlet />
         <Footer />
       </PartiesProvider>
+    </AuthState>
       
     </>
   );

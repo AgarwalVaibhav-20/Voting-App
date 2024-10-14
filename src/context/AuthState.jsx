@@ -6,7 +6,7 @@ import React from 'react'
 export const AuthState = ({ children }) => {
 
     const [loggedUser, setLoggedUser] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [status, setStatus] = useState(false);
 
     const fetchUser = async (token) => {
@@ -27,9 +27,15 @@ export const AuthState = ({ children }) => {
           return false;
     };
     useEffect(() => {
-      const res = fetchUser(localStorage.getItem('token'));
-      if(res)
-        setStatus(false);
+        const authToken = localStorage.getItem('token')
+        if(authToken){
+            const res = fetchUser(authToken);
+            if(res){
+                console.log(res)
+                setStatus(false);
+                setIsLoggedIn(true);
+            }
+        }
     }, [])
     
 

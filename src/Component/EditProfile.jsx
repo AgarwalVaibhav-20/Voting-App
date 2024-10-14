@@ -39,6 +39,9 @@ const EditProfile = () => {
     let profilePictureUrl = "";
     if (profilePicture) {
       // profilePic has image and also loggedUser.profilePic has image
+      // if(loggedUser?.profilePic){
+        
+      // }
       // no profilepic updation on other fields changes
       profilePictureUrl = await uploadImageToCloudinary(profilePicture);
     }

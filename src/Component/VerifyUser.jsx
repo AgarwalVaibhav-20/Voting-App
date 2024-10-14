@@ -131,7 +131,10 @@ const VerifyUser = () => {
           transition: Bounce,
           });
         // console.log('token found')
+        // localStorage.setItem('token', response.data.token);
+        // navigate('/');
         localStorage.setItem('token', response.data.token);
+        fetchUser(response.data.token);
         navigate('/');
       } else {
         toast.error(response.data.message, {

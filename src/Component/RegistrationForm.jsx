@@ -37,8 +37,11 @@ export default function RegistrationForm() {
     // console.log('resData', response.data)
     if (response.data && response.data.token) {
       // console.log('token found')
+      // localStorage.setItem('token', response.data.token);
+      // navigate('/verify');
       localStorage.setItem('token', response.data.token);
-      navigate('/verify');
+        fetchUser(response.data.token);
+        navigate('/verify');
     } else {
       toast(response.data.message, {
         position: "bottom-right",

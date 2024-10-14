@@ -8,12 +8,15 @@ import { Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VerifyUser from "./VerifyUser";
 import { useNavigate} from 'react-router-dom';
+import { useAuth } from "../context/AuthState";
 
 export default function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate= useNavigate();
+
+  const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -25,9 +28,16 @@ export default function RegistrationForm() {
 
   const onSubmit = async (data) => {
     // console.log(data);
+    const newData = {
+      name:data.name,
+      email:data.email,
+      age:data.age,
+      password:data.password,
+      adhaarNum:data.adhaarNum
+    }
     // const res = await axios.post(`https://voting-app-backend-node.vercel.app/user/signup`, data);
     const response = await toast.promise(
-      axios.post(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/signup`, data),
+      axios.post(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/signup`, newData),
       {
         pending: 'Signing up ....',
         success: 'Sign-Up success 👌',

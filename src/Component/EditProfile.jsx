@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const EditProfile = () => {
   
-  const { loggedUser, isLoggedIn, logout, fetchUser, status } = useAuth();
   
   const [name, setName] = useState(loggedUser?.name);
   const [email, setEmail] = useState(loggedUser?.email);
@@ -31,6 +30,8 @@ const EditProfile = () => {
   const [isSubmit, setIsSubmit] = useState(false)
 
   const [token, setToken] = useState(localStorage.getItem('token'));
+
+  const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -85,6 +86,7 @@ const EditProfile = () => {
         transition: Bounce,
       });
     }
+    fetchUser(token)
     setIsSubmit(false);
     console.log("Profile Data to Submit:", res);
   };

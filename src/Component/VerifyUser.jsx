@@ -7,6 +7,7 @@ import { Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { useTimer } from 'react-timer-hook';
+import { useAuth } from '../context/AuthState';
 
 const VerifyUser = () => {
 
@@ -15,6 +16,8 @@ const VerifyUser = () => {
   const [isBtnClicked, setisBtnClicked] = useState(false);
   const [isResendOtpClicked, setIsResendOtpClicked] = useState(true)
   const navigate = useNavigate();
+
+  const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
 
   const [token, setToken] = useState(null);
 

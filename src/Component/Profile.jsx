@@ -75,19 +75,19 @@ export default function ProfilePage() {
               </p></div>
               <div className='flex gap-10'>
                 <div className="font-bold text-gray-800">Aadhaar Id : </div>
-                <p className="text-gray-800 max-sm:hidden">{loggedUser?.adhaarNum}</p>
+                <p className="text-gray-800">{loggedUser?.adhaarNum}</p>
               </div>
               <div className='flex gap-10'>
                 <div className="font-bold text-gray-800">Age : </div>
-                <p className="text-gray-800 max-sm:hidden">{loggedUser?.age}</p>
+                <p className="text-gray-800">{loggedUser?.age}</p>
               </div>
               <div className='flex gap-10'>
                 <div className="font-bold text-gray-800">User type : </div>
-                <p className="text-gray-800 max-sm:hidden">{loggedUser?.userType}</p>
+                <p className="text-gray-800">{loggedUser?.userType}</p>
               </div>
               <div className='flex gap-10'>
                 <div className="font-bold text-gray-800">Is Voted : </div>
-                <p className="text-gray-800 max-sm:hidden">{loggedUser?.isVoted ? <div className='text-green-500 font-bold'>Voted successfully</div> : <div className='text-orange-500 font-bold'>Didn't casted vote yet.</div> }</p>
+                <p className="text-gray-800">{loggedUser?.isVoted ? <div className='text-green-500 font-bold'>Voted successfully</div> : <div className='text-orange-500 font-bold'>Didn't casted vote yet.</div> }</p>
               </div>
             </div>
           </div>

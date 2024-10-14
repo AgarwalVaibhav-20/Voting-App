@@ -115,7 +115,7 @@ export default function Myhead() {
                     <img
                       src={!status && loggedUser?.profilePic ? loggedUser.profilePic : 'https://res.cloudinary.com/dljgidqrq/image/upload/v1728844361/ljmzm14uujnfl1nqwlxi.jpg'}
                       alt="Profile"
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full object-cover"
                     />
                     <span className='font-bold'>{loggedUser?.name.split(' ')[0]}</span>
                   </button> : <NavLink to="/login" className="block px-4 py-2 font-bold text-orange-400 hover:text-orange-600" onClick={closeProfileDropdown}>Login / Signup</NavLink> 
@@ -132,7 +132,7 @@ export default function Myhead() {
                       <img
                         src={!status && loggedUser?.profilePic  ? loggedUser.profilePic : 'https://res.cloudinary.com/dljgidqrq/image/upload/v1728844361/ljmzm14uujnfl1nqwlxi.jpg'}
                         alt="Profile"
-                        className="w-10 h-10 rounded-full"
+                        className="w-10 h-10 rounded-full object-cover"
                       />
                       <span className="text-gray-800">{loggedUser?.name}</span>
                     </li>

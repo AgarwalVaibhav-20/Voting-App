@@ -122,9 +122,9 @@ export default function LoginForm() {
                 <div>
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-orange-600 hover:bg-orange-400 active:bg-orange-500 focus:outline-none"
+                    className="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-orange-600 hover:bg-orange-400 active:bg-orange-500 disabled:cursor-not-allowed focus:outline-none disabled:bg-orange-400"
                   >
-                    {isLogin ? <div className='flex items-center space-x-2'><CgSpinner className='animate-spin size-5' /><div>Logging in..</div></div> : "Log In"}
+                    {isLogin ? <div className='flex items-center justify-center space-x-2'><CgSpinner className='animate-spin size-5' /><div>Logging in..</div></div> : "Log In"}
                   </button>
                 </div>
                 <div>

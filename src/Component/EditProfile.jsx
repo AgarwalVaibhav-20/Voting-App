@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const EditProfile = () => {
   
+  const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
   
   const [name, setName] = useState(loggedUser?.name);
   const [email, setEmail] = useState(loggedUser?.email);
@@ -31,7 +32,7 @@ const EditProfile = () => {
 
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
+  
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -174,7 +175,7 @@ const EditProfile = () => {
               className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 focus:outline-none px-4 rounded disabled:cursor-not-allowed disabled:bg-blue-400 focus:shadow-outline transition duration-300 " disabled={isSubmit}
             >
               {
-                isSubmit ? <div className='flex items-center justify-center space-x-2'><CgSpinner className='animate-spin size-5' /><div>Updating...</div></div> : "Submit"
+                isSubmit ? <div className='flex items-center justify-center space-x-2'><CgSpinner className='animate-spin size-5' /><div>Updating...</div></div> : "Save Changes"
               }
             </button>
           </form>

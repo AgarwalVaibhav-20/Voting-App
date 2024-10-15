@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { uploadImageToCloudinary } from "../upload/uploadImageToCloudinary";
+import { deleteImageFromCloudinary, uploadImageToCloudinary } from "../upload/uploadImageToCloudinary";
 import { useAuth } from "../context/AuthState";
 import { CgSpinner } from "react-icons/cg";
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,10 +15,10 @@ const EditProfile = () => {
   const [email, setEmail] = useState(loggedUser?.email);
   const [profilePicture, setProfilePicture] = useState(null);
 
-  useEffect(() => {
-    setName(loggedUser?.name)
-    setEmail(loggedUser?.email)
-  }, [])
+  // useEffect(() => {
+  //   setName(loggedUser?.name)
+  //   setEmail(loggedUser?.email)
+  // }, [])
   
 
   const [picToDIsplay, setPicToDIsplay] = useState(null)
@@ -41,9 +41,17 @@ const EditProfile = () => {
     let profilePictureUrl = "";
     if (profilePicture) {
       // profilePic has image and also loggedUser.profilePic has image
-      // if(loggedUser?.profilePic){
-        
-      // }
+      if(loggedUser?.profilePic){
+        const profDelete = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/profile/deleteImage`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({imgUrl:loggedUser?.profilePic})
+        })
+        // console.log('res of prof img delete',profDelete);
+      }
       // no profilepic updation on other fields changes
       profilePictureUrl = await uploadImageToCloudinary(profilePicture);
     }
@@ -89,7 +97,7 @@ const EditProfile = () => {
     }
     fetchUser(token)
     setIsSubmit(false);
-    console.log("Profile Data to Submit:", res);
+    // console.log("Profile Data to Submit:", res);
   };
 
   return (
@@ -114,7 +122,7 @@ const EditProfile = () => {
             {profilePicture && (
               <div className="mb-5 flex justify-center">
                 <img
-                  src={loggedUser?.profilePic ? loggedUser?.profilePic : picToDIsplay}
+                  src={picToDIsplay}
                   alt="Profile Preview"
                   className="rounded-full w-24 h-24 object-cover"
                 />

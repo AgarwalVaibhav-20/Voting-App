@@ -15,10 +15,10 @@ const EditProfile = () => {
   const [email, setEmail] = useState(loggedUser?.email);
   const [profilePicture, setProfilePicture] = useState(null);
 
-  // useEffect(() => {
-  //   setName(loggedUser?.name)
-  //   setEmail(loggedUser?.email)
-  // }, [])
+  useEffect(() => {
+    setName(loggedUser?.name)
+    setEmail(loggedUser?.email)
+  }, [loggedUser?.email, loggedUser?.name])
   
 
   const [picToDIsplay, setPicToDIsplay] = useState(null)

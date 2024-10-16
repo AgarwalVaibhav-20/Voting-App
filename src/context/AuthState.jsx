@@ -41,6 +41,7 @@ export const AuthState = ({ children }) => {
 
 
     const logout = () => {
+        localStorage.removeItem('token');
         setLoggedUser(null);
         setIsLoggedIn(false);
     };

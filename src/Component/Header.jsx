@@ -24,7 +24,6 @@ export default function Myhead() {
   const handleClickOnLogout = () => {
     closeProfileDropdown();
     logout();
-    localStorage.removeItem('token');
     navigate('/login');
   }
 

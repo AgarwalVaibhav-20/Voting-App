@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteImageFromCloudinary, uploadImageToCloudinary } from "../upload/uploadImageToCloudinary";
+import { uploadImageToCloudinary } from "../upload/uploadImageToCloudinary";
 import { useAuth } from "../context/AuthState";
 import { CgSpinner } from "react-icons/cg";
 import { ToastContainer, toast } from 'react-toastify';

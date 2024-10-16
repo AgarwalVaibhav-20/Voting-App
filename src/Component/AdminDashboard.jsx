@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { FiEdit, FiTrash2, FiRefreshCw } from "react-icons/fi";
+import { useAuth } from "../context/AuthState";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
+
+  const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
+
+  const navigate = useNavigate();
+
   const [candidates, setCandidates] = useState([
     {
       id: 1,
@@ -35,6 +42,11 @@ const AdminDashboard = () => {
     (acc, candidate) => acc + candidate.votes,
     0
   );
+
+  const handleClickToLogout = () => {
+    logout();
+    navigate('/login');
+  }
 
   const handleAddCandidate = () => {
     if (newCandidateName.trim() === "" || newPartyName.trim() === "") return;
@@ -85,7 +97,7 @@ const AdminDashboard = () => {
       <div className="flex justify-between items-center mb-10">
         <h1 className="text-5xl text-[#0d0a0b] font-[200]">Admin Dashboard</h1>
         <div className="max-sm:translate-y-[-40px] max-sm:text-xs">
-          <button className="bg-white max-sm:font-bold w-full   text-slate-600 px-6 py-2 rounded-lg shadow-lg hover:text-white hover:bg-black transition duration-300">
+          <button onClick={handleClickToLogout} className="bg-white max-sm:font-bold w-full   text-slate-600 px-6 py-2 rounded-lg shadow-lg hover:text-white hover:bg-black transition duration-300">
             Log Out
           </button>
         </div>
@@ -113,14 +125,14 @@ const AdminDashboard = () => {
         <button
           onClick={handleAddCandidate}
           data-ripple-light="true"
-          className="rounded-md flex items-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="rounded-md font-bold flex items-center border border-orange-500 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-orange-600 hover:text-white hover:bg-orange-600 hover:border-orange-600 focus:text-white focus:bg-orange-700 focus:border-orange-700 active:border-orange-800 active:text-white active:bg-orange-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
         >
           Add Candidate
         </button>
       </div>
 
       {/* Candidates Table */}
-      <div className="flex flex-col overflow-x-auto">
+      <div className="flex flex-col md:overflow-x-hidden overflow-x-auto">
         <div className="sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-x-auto rounded-lg">
@@ -192,7 +204,7 @@ const AdminDashboard = () => {
                       </td>
 
                       {/* Action Buttons */}
-                      <td className="py-3  px-3 sm:px-6 text-center">
+                      <td className="py-3 flex flex-wrap gap-2 px-3 sm:px-6 justify-center">
                         {editCandidateId === candidate.id ? (
                           <button
                             onClick={saveEditCandidate}

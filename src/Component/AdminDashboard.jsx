@@ -14,6 +14,8 @@ const AdminDashboard = () => {
 
   const [isDelClicked, setIsDelClicked] = useState(false);
 
+  const [isSubmitEdit, setIsSubmitEdit] = useState(false);
+
   const { loggedUser, isLoggedIn, logout, fetchUser, status } = useAuth();
 
   const handleEditOption = useRef(null);
@@ -179,11 +181,14 @@ const AdminDashboard = () => {
 
     // handleEditOption.current.click();
 
+    setIsSubmitEdit(true);
+
     let profilePictureUrlEdit = "";
     const candidate = candidates.find((c) => c._id === editCandidateId);
 
     if (editCandidateName.trim() === candidate.name && dataOptionEdit === candidate.party && profilePictureEdit === null) {
       setEditCandidateId(null);
+      setIsSubmitEdit(false);
       return;
     };
 
@@ -198,19 +203,62 @@ const AdminDashboard = () => {
           body: JSON.stringify({ imgUrl: candidate?.profilePic })
         })
       }
-      profilePictureUrlEdit = await uploadImageToCloudinary(profilePicture);
+      profilePictureUrlEdit = await uploadImageToCloudinary(profilePictureEdit);
     }
 
 
+    const candidateDataEdit = {
+      name:editCandidateName.trim(),
+      party:dataOptionEdit,
+      profilePic:profilePictureEdit ? profilePictureUrlEdit : candidate?.profilePic, 
+    };
 
-    setCandidates(
-      candidates.map((candidate) =>
-        candidate._id === editCandidateId
-          ? { ...candidate, name: editCandidateName, party: dataOptionEdit }
-          : candidate
-      )
-    );
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/admin/candidate/others/${editCandidateId}`, {
+      method: 'PUT',
+      headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(candidateDataEdit)
+    })
+    const res = await response.json()
+    if(!response.ok){
+      toast.error(res.error, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }else{
+      toast.success(res.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
+
+    fetchCandidates();
+
+    // setCandidates(
+    //   candidates.map((candidate) =>
+    //     candidate._id === editCandidateId
+    //       ? { ...candidate, name: editCandidateName, party: dataOptionEdit }
+    //       : candidate
+    //   )
+    // );
     setEditCandidateId(null);
+    setIsSubmitEdit(false);
   };
 
   const handleDeleteCandidate = async (id, url) => {
@@ -497,9 +545,9 @@ const AdminDashboard = () => {
                           {editCandidateId === candidate._id ? (
                             <button
                               onClick={saveEditCandidate}
-                              className="bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 transition text-xs sm:text-sm"
+                              className="bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 transition text-xs sm:text-sm disabled:cursor-not-allowed" disabled={isSubmitEdit}
                             >
-                              Save
+                              {isSubmitEdit ? <CgSpinner className='animate-spin size-3' /> :'Save'}
                             </button>
                           ) : (
                             <button

@@ -12,6 +12,8 @@ const AdminDashboard = () => {
 
   const [token, setToken] = useState(localStorage.getItem('token'))
 
+  const [isDelClicked, setIsDelClicked] = useState(false);
+
   const { loggedUser, isLoggedIn, logout, fetchUser, status } = useAuth();
 
   const navigate = useNavigate();
@@ -170,8 +172,56 @@ const AdminDashboard = () => {
     setEditCandidateId(null);
   };
 
-  const handleDeleteCandidate = (id) => {
-    setCandidates(candidates.filter((candidate) => candidate.id !== id));
+  const handleDeleteCandidate = async (id,url) => {
+    setIsDelClicked(true);
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/admin/candidate/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if(url){
+      const imgDelete = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/profile/deleteImage`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({imgUrl:url})
+      }) 
+    }
+
+    const res = await response.json()
+    if(!response.ok){
+      toast.error(res.error, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }else{
+      toast.success(res.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setCandidates(candidates.filter((candidate) => candidate.id !== id));
+    }
+    fetchCandidates();
+    setIsDelClicked(false)
   };
 
   const handleResetVotes = (id) => {
@@ -375,7 +425,7 @@ const AdminDashboard = () => {
                             </button>
                           ) : (
                             <button
-                              onClick={() => handleEditCandidate(candidate.id)}
+                              onClick={() => handleEditCandidate(candidate._id)}
                               className="bg-[#252422] text-white px-2 py-1 rounded-md hover:bg-[#8a817c] transition text-xs sm:text-sm"
                             >
                               <FiEdit className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -383,14 +433,14 @@ const AdminDashboard = () => {
                           )}
 
                           <button
-                            onClick={() => handleDeleteCandidate(candidate.id)}
-                            className="bg-[#ae2012] text-white px-2 py-1 rounded-md hover:bg-red-600 transition ml-1 sm:ml-2 text-xs sm:text-sm"
+                            onClick={() => handleDeleteCandidate(candidate._id, candidate.profilePic)} disabled={isDelClicked}
+                            className="bg-[#ae2012] text-white px-2 py-1 rounded-md hover:bg-red-600 transition ml-1 sm:ml-2 text-xs sm:text-sm disabled:cursor-not-allowed"
                           >
-                            <FiTrash2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                           {isDelClicked ? <CgSpinner className='animate-spin size-4' /> :  <FiTrash2 className="w-4 h-4 sm:w-5 sm:h-5" />}
                           </button>
 
                           <button
-                            onClick={() => handleResetVotes(candidate.id)}
+                            onClick={() => handleResetVotes(candidate._id)}
                             className="bg-[#22333b] text-white px-2 py-1 rounded-md hover:bg-gray-600 transition ml-1 sm:ml-2 text-xs sm:text-sm"
                           >
                             <FiRefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />

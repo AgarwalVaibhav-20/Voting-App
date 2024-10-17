@@ -10,6 +10,8 @@ import { uploadImageToCloudinary } from "../upload/uploadImageToCloudinary";
 
 const AdminDashboard = () => {
 
+  const [token, setToken] = useState(localStorage.getItem('token'))
+
   const { loggedUser, isLoggedIn, logout, fetchUser, status } = useAuth();
 
   const navigate = useNavigate();
@@ -29,29 +31,7 @@ const AdminDashboard = () => {
         setDataOption(event.target.value);
     };
 
-  const [candidates, setCandidates] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      party: "Democratic Party",
-      votes: 120,
-      logo: "https://via.placeholder.com/40", // Replace with real party logo URL
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      party: "Republican Party",
-      votes: 85,
-      logo: "https://via.placeholder.com/40", // Replace with real party logo URL
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      party: "Green Party",
-      votes: 45,
-      logo: "https://via.placeholder.com/40", // Replace with real party logo URL
-    },
-  ]);
+  const [candidates, setCandidates] = useState([]);
 
   const [newCandidateName, setNewCandidateName] = useState("");
   const [newPartyName, setNewPartyName] = useState("");
@@ -59,7 +39,7 @@ const AdminDashboard = () => {
   const [editCandidateName, setEditCandidateName] = useState("");
 
   const totalVotes = candidates.reduce(
-    (acc, candidate) => acc + candidate.votes,
+    (acc, candidate) => acc + candidate.voteCount,
     0
   );
 
@@ -68,8 +48,35 @@ const AdminDashboard = () => {
     navigate('/login');
   }
 
+  const fetchCandidates = async () => {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/admin/candidates`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    const res = await response.json()
+    if(!response.ok){
+      toast.error(res.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }else{
+      // console.log("data :",res)
+      setCandidates([...res.data]);
+    }
+  }
+
   useEffect(() => {
-    
+    fetchCandidates()
   }, [])
   
 
@@ -99,7 +106,7 @@ const AdminDashboard = () => {
     }
     const candidateData = {
       name: newCandidateName,
-      party: newPartyName,
+      party: dataOption,
       profilePic: profilePicture ? profilePictureUrl : loggedUser?.profilePic,
     };
 
@@ -137,14 +144,7 @@ const AdminDashboard = () => {
         theme: "colored",
         transition: Bounce,
       });
-      const newCandidate = {
-        id: candidates.length + 1,
-        name: newCandidateName,
-        party: dataOption,
-        votes: 0,
-        logo: res.response.profilePic, // Placeholder logo
-      };
-      setCandidates([...candidates, newCandidate]);
+      fetchCandidates();
       setNewCandidateName("");
       setNewPartyName("");
     }
@@ -353,7 +353,7 @@ const AdminDashboard = () => {
                         {/* Party Logo */}
                         <td className="py-3 text-center px-2  sm:px-6 ">
                           <img
-                            src={candidate.logo}
+                            src={candidate.profilePic}
                             alt={`${candidate.party} logo`}
                             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
                           />
@@ -361,7 +361,7 @@ const AdminDashboard = () => {
 
                         {/* Vote Info */}
                         <td className="py-3 px-3 sm:px-6 text-center">
-                          <span>{candidate.votes}</span>
+                          <span>{candidate.voteCount}</span>
                         </td>
 
                         {/* Action Buttons */}

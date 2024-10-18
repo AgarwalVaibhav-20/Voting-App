@@ -11,7 +11,7 @@ export default function ProfilePage() {
 
   const { loggedUser, isLoggedIn, logout, fetchUser, status } = useAuth();
 
-  if (fetchingCandidates) {
+  if (status) {
     return <div className='w-full h-screen flex justify-center items-center'>
       <ImSpinner9 className='text-orange-500 size-20 animate-spin' />
     </div>

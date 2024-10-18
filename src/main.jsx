@@ -14,6 +14,9 @@ import FAQPage from "./Component/FAQPage.jsx";
 import AdminDashboard from "./Component/AdminDashboard.jsx";
 import RegistrationForm from "./Component/RegistrationForm.jsx";
 import VerifyUser from "./Component/VerifyUser.jsx";
+import { AuthState } from "./context/AuthState.jsx";
+import ProtectedRoute from "./context/ProtectedRoute.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,51 +25,53 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: <ProtectedRoute element={<Dashboard />} allowedRoles={['admin', 'voter', 'GUEST']} />,
       },
       {
         path: "voting",
-        element: <VotingUser />,
+        element: <ProtectedRoute element={<VotingUser />} allowedRoles={['voter']} />,
       },
       {
-        path:"profile",
-        element:<Profile/>
+        path: "profile",
+        element: <ProtectedRoute element={<Profile />} allowedRoles={['admin', 'voter']} />,
       },
       {
-        path:"editprofile",
-        element:<EditProfile/>
+        path: "editprofile",
+        element: <ProtectedRoute element={<EditProfile />} allowedRoles={['admin', 'voter']} />,
       },
       {
-        path:"login",
-        element:<LoginForm/>
+        path: "login",
+        element: <ProtectedRoute element={<LoginForm />} allowedRoles={['GUEST']} />,
       },
       {
-        path:"Sign-up",
-        element:<RegistrationForm/>
+        path: "Sign-up",
+        element: <ProtectedRoute element={<RegistrationForm />} allowedRoles={['GUEST']} />,
       },
       {
-        path:"verify",
-        element:<VerifyUser/>
+        path: "verify",
+        element: <ProtectedRoute element={<VerifyUser />} allowedRoles={['GUEST', 'admin', 'voter']} />,
       },
       {
-        path:"help&support",
-        element:<HelpSupport/>
-      }
-      ,{
-        path:"faqpage",
-        element:<FAQPage/>
-      }
-      ,{
-        path:"admin",
-        element:<AdminDashboard/>
-      }
+        path: "help&support",
+        element: <ProtectedRoute element={<HelpSupport />} allowedRoles={['admin', 'voter']} />,
+      },
+      {
+        path: "faqpage",
+        element: <ProtectedRoute element={<FAQPage />} allowedRoles={['admin', 'voter', 'GUEST']} />,
+      },
+      {
+        path: "admin",
+        element: <ProtectedRoute element={<AdminDashboard />} allowedRoles={['admin']} />,
+      },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <AuthState>
     <RouterProvider router={router} />
     {/* <App /> */}
+    </AuthState>
   </StrictMode>
 );

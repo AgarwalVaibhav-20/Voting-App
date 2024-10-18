@@ -35,6 +35,15 @@ export const AuthState = ({ children }) => {
                 setStatus(false);
                 setIsLoggedIn(true);
             }
+            // const checkUser = async () => {
+            //     const res = await fetchUser(authToken);
+            //     if(res){
+            //             console.log(res)
+            //             setStatus(false);
+            //             setIsLoggedIn(true);
+            //         }
+            // };
+            // checkUser(); 
         }
     }, [])
     

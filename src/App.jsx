@@ -5,8 +5,9 @@ import { useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import Header from "./Component/Header";
 import Footer from "./Component/Footer";
-import { PartiesProvider } from "./Component/ContextApi";
+// import { PartiesProvider } from "./Component/ContextApi";
 import { AuthState } from "./context/AuthState";
+import { PartiesProvider } from "./context/ContextApi";
 
 const App = () => {
   const { pathname } = useLocation();

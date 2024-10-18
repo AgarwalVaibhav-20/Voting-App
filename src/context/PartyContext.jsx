@@ -11,6 +11,8 @@ import shsubt from "../assets/shsubt.png";
 import ncpsp from "../assets/ncpsp.png";
 import SHS from "../assets/ssh.png";
 
+// import SHS from '../assets/'
+
 // Create the context
 export const PartyContext = createContext();
 

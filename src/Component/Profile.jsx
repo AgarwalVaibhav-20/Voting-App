@@ -1,18 +1,19 @@
 import { useContext } from "react";
-import { PartiesName } from "./ContextApi"; // Ensure you have a valid context here
+import { PartiesName } from "../context/ContextApi"; // Ensure you have a valid context here
 import profileImage from "../assets/profileImage.jpg";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthState";
 import { GiCircleClaws } from "react-icons/gi";
+import { ImSpinner9 } from "react-icons/im";
 
 export default function ProfilePage() {
   const parties = useContext(PartiesName); // Get party names from context
 
   const { loggedUser, isLoggedIn, logout, fetchUser, status } = useAuth();
 
-  if (status) {
+  if (fetchingCandidates) {
     return <div className='w-full h-screen flex justify-center items-center'>
-      <GiCircleClaws className='text-orange-500 size-20 animate-spin' />
+      <ImSpinner9 className='text-orange-500 size-20 animate-spin' />
     </div>
   }
 

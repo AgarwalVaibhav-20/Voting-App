@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import HeaderDash from './HeaderDash'
 import StatsCard from './StatsCard';
 import VoteChart from './VoterChart';
 import VoterTable from './VoterTable';
+import { ImSpinner9 } from 'react-icons/im';
 
 const Dashboard = () => {
+
   // Simulated Data
   const [voters, setVoters] = useState([
     { id: 1, name: 'Shivam Shukla', vote: 'BJP' },
@@ -24,8 +26,74 @@ const Dashboard = () => {
     { id: 15, name: 'Subash ghosh', vote: 'AITC' },
   ]);
 
+  const [fetchingVoters, setFetchingVoters] = useState(false);
+  const [candidates, setCandidates] = useState([]);
+  const [totalUserVoted, setTotalUserVoted] = useState();
+  // const [voters, setVoters] = useState([]);
+
+  const fetchVoters = async () => {
+    setFetchingVoters(true);
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/totalVoters`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const res = await response.json()
+    if (!response.ok) {
+      toast.error(res.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    } else {
+      // console.log("data :",res)
+      setTotalUserVoted(res.totalVoters);
+      setVoters([...res.usersVoted]);
+    }
+    setFetchingVoters(false);
+  }
+
+  const fetchCandidates = async () => {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/candidates`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const res = await response.json()
+    if (!response.ok) {
+      toast.error(res.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    } else {
+      // console.log("data :",res)
+      setCandidates([...res.data]);
+    }
+  }
+
+  useEffect(() => {
+    fetchVoters();
+    fetchCandidates();
+  }, [])
+
+
   const voteData = {
-    BJP: 240,
+    BJP: 340,
     INC: 99,
     SP: 37,
     AITC: 29,
@@ -38,11 +106,19 @@ const Dashboard = () => {
     Other:64
   };
 
+
+
   const sumOfVotes = Object.values(voteData).reduce((acc, curr) => acc + curr, 0);
   
   // Set a limit on the total number of votes to 543
-  const totalVotes = sumOfVotes >= 543 ? "543/543" : `${sumOfVotes}/543`;
+  const totalVotes = sumOfVotes === totalUserVoted ? `${sumOfVotes}/${totalUserVoted}` : `${voters.length}/${totalUserVoted}`  ;
   const leadingCandidate = Object.keys(voteData).reduce((a, b) => (voteData[a] > voteData[b] ? a : b));
+
+  if (fetchingVoters) {
+    return <div className='w-full h-screen flex justify-center items-center'>
+      <ImSpinner9 className='text-orange-500 size-20 animate-spin' />
+    </div>
+  }
 
   return (
     <>

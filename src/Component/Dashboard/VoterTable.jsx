@@ -7,7 +7,7 @@ const VoterTable = ({ voters }) => {
       <table className="min-w-full bg-white">
         <thead>
           <tr>
-            <th className="py-2">Voter ID</th>
+            <th className="py-2">ID</th>
             <th className="py-2">Name</th>
             <th className="py-2">Voted For</th>
           </tr>
@@ -15,9 +15,9 @@ const VoterTable = ({ voters }) => {
         <tbody>
           {voters.map((voter, index) => (
             <tr key={index} className="text-center">
-              <td className="py-2">{voter.id}</td>
-              <td className="py-2">{voter.name}</td>
-              <td className="py-2">{voter.vote}</td>
+              <td className="py-2">{voter?._id}</td>
+              <td className="py-2">{voter?.name}</td>
+              <td className="py-2">{voter?.votedFor?.party}</td>
             </tr>
           ))}
         </tbody>
@@ -30,9 +30,11 @@ const VoterTable = ({ voters }) => {
 VoterTable.propTypes = {
   voters: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      _id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      vote: PropTypes.string.isRequired,
+      votedFor: PropTypes.shape({
+        party: PropTypes.string.isRequired,
+      }).isRequired,
     })
   ).isRequired,
 };

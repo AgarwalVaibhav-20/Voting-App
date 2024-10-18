@@ -23,7 +23,5 @@ const VoteChart = ({ data }) => {
 
   return <Doughnut data={chartData} options={options} />;
 };
-VoteChart.propTypes = {
-  data: PropTypes.object.isRequired,
-};
+
 export default VoteChart;

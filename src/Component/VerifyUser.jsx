@@ -19,7 +19,7 @@ const VerifyUser = () => {
 
   const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   const time = new Date();
   time.setSeconds(time.getSeconds() + 120);
@@ -28,12 +28,18 @@ const VerifyUser = () => {
   const { start, restart, minutes, seconds } = useTimer({ expiryTimestamp })
 
   useEffect(() => {
-    setToken(localStorage.getItem('token'))
+    // setToken(localStorage.getItem('token'))
+    if(loggedUser?.isVerified){
+      navigate('/')
+    }
+    if(!token){
+      navigate('/login')
+    }
     start();
     setTimeout(() => {
       setIsResendOtpClicked(false);
     }, 120000);
-  }, [])
+  }, [loggedUser, token])
 
   const enableCount = () => {
     const resetTime = new Date();

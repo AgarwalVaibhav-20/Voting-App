@@ -46,15 +46,15 @@ export default function ProfilePage() {
             Recent Activity
           </h3>
           <div className="flex justify-center items-center">
-            {loggedUser?.votedFor.party ?
+            {loggedUser?.votedFor?.party ?
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <p className="text-lg font-medium text-gray-800">
                   Voted for{" "}
                   <span className="font-bold text-blue-500">
-                    {loggedUser.votedFor.party}
+                    {loggedUser?.votedFor?.party}
                   </span>
                 </p>
-                <p className="text-sm text-gray-500">Date: {loggedUser.votedFor.votedAt}</p>
+                <p className="text-sm text-gray-500">Date: {loggedUser?.votedFor?.votedAt.split('T')[0]}</p>
               </div>
               :
               <p className="text-gray-800 text-center bg-white p-6 rounded-lg shadow-md">No recent voting activity found.</p>

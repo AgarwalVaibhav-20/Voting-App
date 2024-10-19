@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [voteData, setVoteData] = useState(null);
   const [candidates, setCandidates] = useState([]);
   const [totalUserVoted, setTotalUserVoted] = useState();
+  const [numOfUsersVoted, setNumOfUsersVoted] = useState();
   // const [voters, setVoters] = useState([]);
 
   const fetchVoters = async () => {
@@ -45,6 +46,7 @@ const Dashboard = () => {
       // console.log("data :",res)
       setTotalUserVoted(res.totalVoters);
       setVoters([...res.usersVoted]);
+      setNumOfUsersVoted(res.totalUsersVoted);
     }
     setFetchingVoters(false);
   }
@@ -124,7 +126,7 @@ const Dashboard = () => {
   const sumOfVotes = candidates.reduce((total, candidate) => total + candidate?.voteCount, 0);
   
   // Set a limit on the total number of votes to 543
-  const totalVotes = sumOfVotes === totalUserVoted ? `${sumOfVotes}/${totalUserVoted}` : `${voters.length}/${totalUserVoted}`  ;
+  const totalVotes = sumOfVotes === totalUserVoted ? `${sumOfVotes}/${totalUserVoted}` : `${numOfUsersVoted}/${totalUserVoted}`  ;
   const leadingCandidate = candidates.reduce((highest, candidate) => {
     return (candidate?.voteCount > highest?.voteCount) ? candidate : highest;
   }, candidates[0]);
@@ -134,10 +136,10 @@ const Dashboard = () => {
       <HeaderDash/>
       <div className="container mx-auto p-4">
         {/* Top Stats Section */}
-        {voters.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {numOfUsersVoted ? <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <StatsCard title="Total Votes" value={totalVotes} />
           <StatsCard title="Leading Candidate" value={leadingCandidate?.party} />
-          <StatsCard title="Voter Turnout" value={`${voters.length} Voters`} />
+          <StatsCard title="Voter Turnout" value={`${numOfUsersVoted} Voters`} />
         </div> : <MdHowToVote className='mx-auto my-auto size-20 animate-pulse text-orange-500'/>}
 
         {/* Chart and Voter List Section */}

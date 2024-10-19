@@ -95,7 +95,7 @@ const EditProfile = () => {
         transition: Bounce,
       });
     }
-    fetchUser(token)
+    await fetchUser(token)
     setIsSubmit(false);
     // console.log("Profile Data to Submit:", res);
   };

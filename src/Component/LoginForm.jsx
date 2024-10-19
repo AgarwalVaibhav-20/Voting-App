@@ -52,7 +52,7 @@ export default function LoginForm() {
         transition: Bounce,
       });
       localStorage.setItem('token', res.token);
-      fetchUser(res.token);
+      await fetchUser(res.token);
       navigate('/');
     }
     setIsLogin(false);

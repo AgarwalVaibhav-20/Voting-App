@@ -72,7 +72,7 @@ export default function RegistrationForm() {
         transition: Bounce,
       });
       localStorage.setItem('token', res.token);
-        fetchUser(res.token);
+        await fetchUser(res.token);
         navigate('/verify');
       }
       setIsSubmitting(false);

@@ -143,7 +143,7 @@ const VerifyUser = () => {
         // localStorage.setItem('token', response.data.token);
         // navigate('/');
         localStorage.setItem('token', response.data.token);
-        fetchUser(response.data.token);
+        await fetchUser(response.data.token);
         navigate('/');
       } else {
         toast.error(response.data.message, {

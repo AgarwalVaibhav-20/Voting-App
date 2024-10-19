@@ -9,12 +9,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import VerifyUser from "./VerifyUser";
 import { useNavigate} from 'react-router-dom';
 import { useAuth } from "../context/AuthState";
+import { CgSpinner } from "react-icons/cg";
 
 export default function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate= useNavigate();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { loggedUser, isLoggedIn, logout, fetchUser , status} = useAuth();
 
@@ -28,6 +31,7 @@ export default function RegistrationForm() {
 
   const onSubmit = async (data) => {
     // console.log(data);
+    setIsSubmitting(true);
     const newData = {
       name:data.name,
       email:data.email,
@@ -35,25 +39,16 @@ export default function RegistrationForm() {
       password:data.password,
       adhaarNum:data.adhaarNum
     }
-    // const res = await axios.post(`https://voting-app-backend-node.vercel.app/user/signup`, data);
-    const response = await toast.promise(
-      axios.post(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/signup`, newData),
-      {
-        pending: 'Signing up ....',
-        success: 'Sign-Up success 👌',
-        error: 'User with this email or aadhaar already exists 🤯'
-      }
-    )
-    // console.log('resData', response.data)
-    if (response.data && response.data.token) {
-      // console.log('token found')
-      // localStorage.setItem('token', response.data.token);
-      // navigate('/verify');
-      localStorage.setItem('token', response.data.token);
-        fetchUser(response.data.token);
-        navigate('/verify');
-    } else {
-      toast(response.data.message, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_PUBLIC_URL}/user/signup`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newData)
+    })
+    const res = await response.json()
+    if(!response.ok){
+      toast.error(res.message, {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -61,10 +56,26 @@ export default function RegistrationForm() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "colored",
         transition: Bounce,
-        });
-    }
+      });
+    }else{
+      toast.success(res.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      localStorage.setItem('token', res.token);
+        fetchUser(res.token);
+        navigate('/verify');
+      }
+      setIsSubmitting(false);
   };
 
   // Watching the password value to validate against confirm password
@@ -122,7 +133,10 @@ export default function RegistrationForm() {
                     type="number"
                     className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                     placeholder="23"
-                    {...register("age", { required: "Age is required" })}
+                    {...register("age", { required: "Age is required",
+                        validate: (value) => 
+                          value >=  18 || 'You must be 18 or above.'
+                     })}
                   />
                   {errors.age && (
                     <p className="text-red-500 text-sm">{errors.age.message}</p>
@@ -242,9 +256,9 @@ export default function RegistrationForm() {
             <div className="!mt-12">
               <button
                 type="submit"
-                className="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none"
+                className="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-orange-300" disabled={isSubmitting}
               >
-                Create an account
+                {isSubmitting ? <div className='flex items-center justify-center space-x-2'><CgSpinner className='animate-spin size-5' /><div>Signing  in..</div></div> : "Create account"}
               </button>
             </div>
 

@@ -49,7 +49,7 @@ const router = createBrowserRouter([
       },
       {
         path: "verify",
-        element: <ProtectedRoute element={<VerifyUser />} allowedRoles={['admin', 'voter']} />,
+        element: <VerifyUser /> 
       },
       {
         path: "help&support",

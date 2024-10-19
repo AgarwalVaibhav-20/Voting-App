@@ -138,15 +138,15 @@ const Dashboard = () => {
           <StatsCard title="Total Votes" value={totalVotes} />
           <StatsCard title="Leading Candidate" value={leadingCandidate?.party} />
           <StatsCard title="Voter Turnout" value={`${voters.length} Voters`} />
-        </div> : <MdHowToVote className='flex justify-center items-center size-20 animate-pulse text-orange-500'/>}
+        </div> : <MdHowToVote className='mx-auto my-auto size-20 animate-pulse text-orange-500'/>}
 
         {/* Chart and Voter List Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h3 className="text-xl font-semibold mb-4">Voting Distribution</h3>
-           {voteData ? <VoteChart data={voteData} /> : <MdHowToVote className='size-20 animate-pulse text-orange-500 flex justify-center items-center'/>}
+           {voteData ? <VoteChart data={voteData} /> : <MdHowToVote className='size-20 animate-pulse text-orange-500 mx-auto my-auto'/>}
           </div>
-          {voters.length > 0 ? <VoterTable voters={voters} /> : <MdHowToVote className='size-20 animate-pulse text-orange-500 flex justify-center items-center'/>}
+          {voters.length > 0 ? <VoterTable voters={voters} /> : <MdHowToVote className='size-20 animate-pulse text-orange-500 mx-auto my-auto'/>}
         </div>
       </div>
     </>

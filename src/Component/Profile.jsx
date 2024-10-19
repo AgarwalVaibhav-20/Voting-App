@@ -88,7 +88,7 @@ export default function ProfilePage() {
               </div>
               <div className='flex gap-10'>
                 <div className="font-bold text-gray-800">Is Voted : </div>
-                <p className="text-gray-800">{loggedUser?.isVoted ? <div className='text-green-500 font-bold'>Voted successfully</div> : <div className='text-orange-500 font-bold'>Didn't casted vote yet.</div> }</p>
+                <p className="text-gray-800">{loggedUser?.userType === 'admin' ? <div className='text-red-500 font-bold'>Admin is not allowed to vote</div> : loggedUser?.isVoted ? <div className='text-green-500 font-bold'>Voted successfully</div> : <div className='text-orange-500 font-bold'>Didn't casted vote yet.</div> }</p>
               </div>
             </div>
           </div>

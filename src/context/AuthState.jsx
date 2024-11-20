@@ -31,7 +31,7 @@ export const AuthState = ({ children }) => {
         if(authToken){
             const res = fetchUser(authToken);
             if(res){
-                console.log(res)
+                // console.log(res)
                 setStatus(false);
                 setIsLoggedIn(true);
             }

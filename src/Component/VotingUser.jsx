@@ -122,7 +122,7 @@ const VotingPage = () => {
         setSubmitted(true);
       }
       setIsSubmitting(false)
-      console.log(`You voted for ${selectedParty}`);
+      // console.log(`You voted for ${selectedParty}`);
     }
   };
 

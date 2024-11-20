@@ -103,7 +103,7 @@ const Dashboard = () => {
       });
     } else {
       setVoteData(res.record);
-      console.log(res.record);
+      // console.log(res.record);
     }
     setFetchingCount(false);
   }
